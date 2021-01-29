@@ -7,6 +7,5 @@ auto yetanotherproject::get_value() -> int {
 
 auto main() -> int {
   testing::InitGoogleTest();
-  RUN_ALL_TESTS();
-  return 0;
+  return RUN_ALL_TESTS();
 }

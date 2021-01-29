@@ -8,6 +8,8 @@ set(EXE_NAME template-project)
 
 project(${PROJECT_NAME} CXX)
 
+find_package(Threads REQUIRED)
+
 add_executable(${EXE_NAME})
 
 set_property(
@@ -19,7 +21,8 @@ add_subdirectory(source)
 
 target_link_libraries(
   ${EXE_NAME}
-     gtest
+    Threads::Threads
+    gtest
 )
 
 target_link_directories(

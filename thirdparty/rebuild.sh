@@ -41,7 +41,12 @@ rebuild_lib() {
         cp $2/$3/* $lib_folder
       elif [ -d $2/lib/$3 ]; then
         cp $2/lib/$3/* $lib_folder
+      elif [ -d $2/lib/ ]; then
+        cp -f $2/lib/*.a $lib_folder 2> /dev/null
+        cp -f $2/lib/*.lib $lib_folder 2> /dev/null
       fi
+    else
+      echo "[ error ] No lib folder."
     fi
 
     cd ..
