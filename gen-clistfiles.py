@@ -98,6 +98,8 @@ out.write('set(EXE_NAME template-project)\n\n')
 
 out.write('project(${PROJECT_NAME} CXX)\n\n')
 
+out.write('find_package(Threads REQUIRED)\n\n')
+
 out.write('add_executable(${EXE_NAME})\n\n')
 
 out.write('set_property(\n')
