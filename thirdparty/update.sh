@@ -38,14 +38,14 @@ unpack_input() {
 inc_folder='../include'
 
 update_repo() {
-  #if [ -d $folder ]
-  #  then
-  #    cd $folder
-  #    git pull
-  #    cd ..
-  #  else
-  #    git clone $url $folder
-  #  fi
+  if [ -d $folder ]
+    then
+      cd $folder
+      git pull
+      cd ..
+    else
+      git clone $url $folder
+    fi
 
   if [ -d $folder ]
     then
