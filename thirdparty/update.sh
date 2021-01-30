@@ -12,47 +12,58 @@
 #   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 #   PURPOSE. See the MIT License for more details.
 
-deps="deps.txt"
-inc_folder="../include"
-    
-update_repo() {
-  # $1 - url
-  # $2 - folder
-  # $3 - headers
-
-  if [ -d $2 ]; then
-    cd $2
-    git pull
-    cd ..
-  else
-    git clone $1 $2
-  fi
-
-  if [ -d $2 ]; then
-    cd $2
-
-    if [ -d ../$inc_folder ]; then
-      cp -r `echo $3` ../`echo $inc_folder`
-    fi
-
-    cd ..
-  fi
-}
+deps='deps.txt'
 
 unpack_input() {
-  # $1 - url
-  # $2 - folder
-  # $3 - build subfolder
-  # $4 - headers
+  url=''
+  folder=''
+  build_to=''
+  headers=''
+  flags=''
+  
+  i=1
+  for arg in $@
+    do
+      case $i in
+        1) url=$arg ;;
+        2) folder=$arg ;;
+        3) build_to=$arg ;;
+        4) headers=$arg ;;
+        *) flags="$flags $arg"
+      esac
+      i=`expr $i + 1`
+    done
+}
 
-  update_repo $1 $2 $4
+inc_folder='../include'
+
+update_repo() {
+  #if [ -d $folder ]
+  #  then
+  #    cd $folder
+  #    git pull
+  #    cd ..
+  #  else
+  #    git clone $url $folder
+  #  fi
+
+  if [ -d $folder ]
+    then
+      cd $folder
+
+      if [ -d ../$inc_folder ]; then
+        cp -r `echo $headers` ../$inc_folder
+      fi
+
+      cd ..
+    fi
 }
 
 if [ -d $inc_folder ]; then
   rm -rf $inc_folder/*
 fi
 
-while read line;
-  do
-    unpack_input $line
-  done < $deps
+while read line; do
+  unpack_input $line
+  update_repo
+done < $deps

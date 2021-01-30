@@ -12,64 +12,71 @@
 #   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 #   PURPOSE. See the MIT License for more details.
 
-deps="deps.txt"
-
-rebuild_lib() {
-  # $1 - folder
-  # $2 - build subfolder
-  # $3 - config (Debug/Release)
-
-  if [ -d $1 ]; then
-    cd $1
-
-    if [ -d $2 ]; then
-      rm -rf $2
-    fi
-
-    cmake \
-      -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
-      -D CMAKE_BUILD_TYPE=$3 \
-      -B$2 -H.
-
-    cmake \
-      --build $2 --config $3
-
-    lib_folder="../../lib/"
-
-    if [ -d $lib_folder ]; then
-      if [ -d $2/$3 ]; then
-        cp $2/$3/* $lib_folder
-      elif [ -d $2/lib/$3 ]; then
-        cp $2/lib/$3/* $lib_folder
-      elif [ -d $2/lib/ ]; then
-        cp -f $2/lib/*.a $lib_folder 2> /dev/null
-        cp -f $2/lib/*.lib $lib_folder 2> /dev/null
-      fi
-    else
-      echo "[ error ] No lib folder."
-    fi
-
-    cd ..
-  fi
-}
+deps='deps.txt'
 
 unpack_input() {
-  # $1 - url
-  # $2 - folder
-  # $3 - build subfolder
-  # $4 - headers
-  # $5 - config
+  url=''
+  folder=''
+  build_to=''
+  headers=''
+  flags=''
+  
+  i=1
+  for arg in $@
+    do
+      case $i in
+        1) url=$arg ;;
+        2) folder=$arg ;;
+        3) build_to=$arg ;;
+        4) headers=$arg ;;
+        *) flags="$flags $arg"
+      esac
+      i=`expr $i + 1`
+    done
+}
 
-  rebuild_lib $2 $3 $5
+config='Release'
+lib_folder='../../lib/'
+
+rebuild_lib() {
+  if [ -d $folder ]
+    then
+      cd $folder
+
+      if [ -d $build_to ]; then
+        rm -rf $build_to
+      fi
+
+      cmake \
+        $flags \
+        -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
+        -D CMAKE_BUILD_TYPE=$config \
+        -B$build_to -H.
+
+      cmake \
+        --build $build_to --config $config
+
+      if [ -d $lib_folder ]
+        then
+          if [ -d $build_to/$config ]; then
+            cp $build_to/$config/* $lib_folder
+          elif [ -d $build_to/lib/$config ]; then
+            cp $build_to/lib/$config/* $lib_folder
+          elif [ -d $build_to/lib/ ]; then
+            cp -f $build_to/lib/*.a $lib_folder 2> /dev/null
+            cp -f $build_to/lib/*.lib $lib_folder 2> /dev/null
+          fi
+        fi
+
+      cd ..
+    fi
 }
 
 if [ $# -eq 1 ]; then
   config=$1
-else
-  config="Release"
 fi
 
-while read line;
-  do
-    unpack_input $line $config
-  done < $deps
+while read line; do
+  unpack_input $line
+  rebuild_lib
+done < $deps
