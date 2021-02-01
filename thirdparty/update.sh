@@ -59,7 +59,7 @@ next_repo
 while read line; do
   if [ -n "$line" ]; then
     for arg in $line; do
-      if [ `echo $arg` = '<repo>' ]
+      if [ "`echo $arg`" = '<repo>' ]
         then
           update_repo
           next_repo

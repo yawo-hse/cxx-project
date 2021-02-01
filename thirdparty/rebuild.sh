@@ -11,7 +11,6 @@ config='Release'
 lib_folder='../../lib/'
 
 rebuild_lib() {
-  echo "  $folder"
   if [ -d "$folder" ]
     then
       cd "$folder"
@@ -80,7 +79,7 @@ next_repo
 while read line; do
   if [ -n "$line" ]; then
     for arg in $line; do
-      if [ `echo $arg` = '<repo>' ]
+      if [ "`echo $arg`" = '<repo>' ]
         then
           rebuild_lib
           next_repo

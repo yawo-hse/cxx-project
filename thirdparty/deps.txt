@@ -1,5 +1,3 @@
 <repo>
-    https://github.com/google/googletest.git
-    googletest
-    build-cmake
-    googletest/include/*
+  https://github.com/google/googletest.git
+  googletest build-cmake googletest/include/*
