@@ -33,14 +33,17 @@ cd ..
 cd ./build
 
 if [ -n "$generator" ]; then
-  generator="-G $generator"
+  cmake \
+    -G "$generator" \
+    -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
+    -D CMAKE_BUILD_TYPE=$config \
+    ..
+else
+  cmake \
+    -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
+    -D CMAKE_BUILD_TYPE=$config \
+    ..
 fi
-
-cmake \
-  $generator \
-  -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
-  -D CMAKE_BUILD_TYPE=$config \
-  ..
 
 cmake \
   --build . --config $config

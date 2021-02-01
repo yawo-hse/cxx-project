@@ -25,13 +25,20 @@ rebuild_lib() {
     then
       cd "$folder"
 
-      echo "generator: $generator"
-      cmake \
-        $generator \
-        $flags \
-        -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
-        -D CMAKE_BUILD_TYPE=$config \
-        -B"$build_to" -H.
+      if [ -n "$generator" ]; then
+        cmake \
+          -G "$generator" \
+          $flags \
+          -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
+          -D CMAKE_BUILD_TYPE=$config \
+          -B"$build_to" -H.
+      else
+        cmake \
+          $flags \
+          -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
+          -D CMAKE_BUILD_TYPE=$config \
+          -B"$build_to" -H.
+      fi
 
       cmake \
         --build "$build_to" --config "$config"
@@ -54,9 +61,7 @@ rebuild_lib() {
 if [ $# -eq 1 ]; then
   config=$1
 elif [ $# -eq 2 ]; then
-  if [ -n "$1" ]; then
-    generator="-G $1"
-  fi
+  generator=$1
   config=$2
 fi
 
