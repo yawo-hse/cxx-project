@@ -14,56 +14,70 @@
 
 deps='deps.txt'
 
-unpack_input() {
+inc_folder='../include'
+
+update_repo() {
+  if [ -n "$url" ]; then
+    if [ -d "$folder" ]
+      then
+        cd "$folder"
+        git pull
+        cd ..
+      else
+        git clone $url "./$folder"
+      fi
+
+    if [ -d "$folder" ]
+      then
+        cd "$folder"
+
+        if [ -d "../$inc_folder" ]; then
+          cp -r `echo $headers` "../$inc_folder"
+        fi
+
+        cd ..
+      fi
+  fi
+}
+
+if [ -d "$inc_folder" ]; then
+  rm -rf "$inc_folder/*"
+fi
+
+next_repo() {
   url=''
   folder=''
   build_to=''
   headers=''
   flags=''
-  
-  i=1
-  for arg in $@
-    do
-      case $i in
-        1) url=$arg ;;
-        2) folder=$arg ;;
-        3) build_to=$arg ;;
-        4) headers=$arg ;;
-        *) flags="$flags $arg"
-      esac
-      i=`expr $i + 1`
-    done
+  i=0
 }
 
-inc_folder='../include'
-
-update_repo() {
-  if [ -d $folder ]
-    then
-      cd $folder
-      git pull
-      cd ..
-    else
-      git clone $url $folder
-    fi
-
-  if [ -d $folder ]
-    then
-      cd $folder
-
-      if [ -d ../$inc_folder ]; then
-        cp -r `echo $headers` ../$inc_folder
-      fi
-
-      cd ..
-    fi
+next_arg() {
+  case $1 in
+    0) url=$2 ;;
+    1) folder=$2 ;;
+    2) build_to=$2 ;;
+    3) headers=$2 ;;
+    *) flags="$flags $2" ;;
+  esac
 }
 
-if [ -d $inc_folder ]; then
-  rm -rf $inc_folder/*
-fi
+next_repo
 
 while read line; do
-  unpack_input $line
-  update_repo
+  if [ -n "$line" ]; then
+    for arg in $line; do
+      if [ `echo $arg` = '<repo>' ]
+        then
+          update_repo
+          next_repo
+        else
+          next_arg $i `echo $arg`
+          i=`expr $i + 1`
+        fi
+    done
+  fi
 done < $deps
+
+update_repo

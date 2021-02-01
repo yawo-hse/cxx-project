@@ -1,5 +1,5 @@
 #!  /usr/bin/python
-#   gen-clistfiles.py
+#   gen-cmake.py
 #
 #       Generate CMakeLists.txt files.
 #
