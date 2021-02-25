@@ -1,0 +1,14 @@
+build-folder: build-cmake
+
+repo {
+  url: https://github.com/google/googletest.git
+  folder: googletest
+}
+
+repo {
+  url: https://github.com/google/benchmark.git
+  folder: benchmark
+  flags {
+    -D BENCHMARK_ENABLE_TESTING=OFF
+  }
+}

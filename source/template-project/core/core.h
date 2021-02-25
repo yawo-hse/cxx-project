@@ -1,5 +1,5 @@
 #pragma once
 
 namespace yetanotherproject {
-  auto get_value() -> int;
+  [[nodiscard]] auto get_value() noexcept -> int;
 }

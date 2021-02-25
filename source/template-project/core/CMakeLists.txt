@@ -1,7 +1,7 @@
 target_sources(
   ${EXE_NAME}
     PRIVATE
-       main.cpp
+      main.cpp
     PUBLIC
-       core.h
+      core.h
 )

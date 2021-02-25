@@ -1,7 +1,7 @@
 #include "core.h"
 #include <gtest/gtest.h>
 
-auto yetanotherproject::get_value() -> int {
+auto yetanotherproject::get_value() noexcept -> int {
   return 42;
 }
 

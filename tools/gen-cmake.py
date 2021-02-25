@@ -1,10 +1,6 @@
-#!  /usr/bin/python
-#   gen-cmake.py
-#
-#       Generate CMakeLists.txt files.
+#!/usr/bin/python
 
-import os
-import glob
+import os, glob
 
 def get_subdirs(folder):
   dirs = list()
@@ -27,7 +23,7 @@ def check_subdirs(folder):
 def print_list(s, offset):
   buf = ''
   char_count = offset
-  for i in range(char_count):
+  for i in range(char_count - 1):
     buf += ' '
   for f in s:
     char_count += len(f) + 1
@@ -59,7 +55,12 @@ def print_subdirs(folder):
   dirs = get_subdirs(folder)
   for f in dirs:
     if check_subdirs(os.path.join(folder, f)):
-      buf += 'add_subdirectory(' + f + ')\n'
+      if f == 'win32':
+        buf += 'if(WIN32)\n'
+        buf += '  add_subdirectory(' + f + ')\n'
+        buf += 'endif()\n'
+      else:
+        buf += 'add_subdirectory(' + f + ')\n'
   return buf
 
 def write_subdirs(folder):
@@ -78,12 +79,10 @@ def clean_subdirs(folder):
       if file == 'CMakeLists.txt':
         os.remove(os.path.join(r, file))
 
-out = open('CMakeLists.txt', 'w')
+out = open(os.path.join('..', 'CMakeLists.txt'), 'w')
 
 out.write('cmake_minimum_required(VERSION 3.18)\n\n')
 
-out.write('set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)\n')
-out.write('set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ../bin)\n\n')
 out.write('set(PROJECT_NAME template-project)\n')
 out.write('set(EXE_NAME template-project)\n\n')
 
@@ -93,15 +92,32 @@ out.write('find_package(Threads REQUIRED)\n\n')
 
 out.write('add_executable(${EXE_NAME})\n\n')
 
+out.write('add_library(Sockets INTERFACE)\n\n')
+
 out.write('set_property(\n')
-out.write('  TARGET ${EXE_NAME}\n')
-out.write('  PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded"\n')
+out.write('  TARGET ${EXE_NAME} PROPERTY CXX_STANDARD 20\n')
 out.write(')\n\n')
+
+out.write('if(MSVC)\n')
+out.write('  set_property(\n')
+out.write('    TARGET ${EXE_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded"\n')
+out.write('  )\n\n')
+out.write('  set_target_properties(\n')
+out.write('    ${EXE_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE"\n')
+out.write('  )\n')
+out.write('endif()\n\n')
+
+out.write('if(WIN32)\n')
+out.write('  add_compile_definitions(_CONSOLE)\n\n')
+out.write('  target_link_libraries(\n')
+out.write('    Sockets INTERFACE ws2_32\n')
+out.write('  )\n')
+out.write('endif()\n\n')
 
 out.write('add_subdirectory(source)\n\n')
 
-clean_subdirs('source')
-write_subdirs('source')
+clean_subdirs(os.path.join('..', 'source'))
+write_subdirs(os.path.join('..', 'source'))
 
 out.write('target_link_libraries(\n  ${EXE_NAME}\n')
 
