@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import os, sys
 
@@ -31,7 +31,7 @@ if len(args['config']) > 0:
 
 os.chdir('tools')
 
-os.system('python build-deps.py' + cmd)
+os.system('python3 build-deps.py' + cmd)
 
 os.chdir('..')
 
