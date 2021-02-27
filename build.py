@@ -4,6 +4,7 @@ import os, sys
 
 def parse_argv():
   args = dict()
+  args['py'] = 'python3'
   args['generator'] = ''
   args['config'] = 'Release'
 
@@ -14,6 +15,8 @@ def parse_argv():
       args['generator'] = argv[i+1]
     elif arg == '--config':
       args['config'] = argv[i+1]
+    elif arg == '--use-python-alias':
+      args['py'] = argv[i+1]
 
   return args
 
@@ -31,7 +34,7 @@ if len(args['config']) > 0:
 
 os.chdir('tools')
 
-os.system('python3 build-deps.py' + cmd)
+os.system(args['py'] + ' build-deps.py' + cmd)
 
 os.chdir('..')
 
