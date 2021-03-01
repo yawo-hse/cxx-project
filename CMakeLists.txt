@@ -26,7 +26,7 @@ if(MSVC)
 endif()
 
 if(WIN32)
-  add_compile_definitions(_CONSOLE)
+  add_compile_definitions(_CONSOLE UNICODE _UNICODE)
 
   target_link_libraries(
     Sockets INTERFACE ws2_32
