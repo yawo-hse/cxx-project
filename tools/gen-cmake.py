@@ -136,4 +136,10 @@ out.write(')\n\n')
 
 out.write('target_include_directories(\n  ${EXE_NAME}\n')
 out.write('    PUBLIC include\n')
+out.write(')\n\n')
+
+out.write('enable_testing()\n\n')
+out.write('add_test(\n')
+out.write('  NAME unittests\n')
+out.write('  COMMAND ${EXE_NAME}\n')
 out.write(')\n')

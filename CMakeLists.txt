@@ -49,3 +49,10 @@ target_include_directories(
   ${EXE_NAME}
     PUBLIC include
 )
+
+enable_testing()
+
+add_test(
+  NAME unittests
+  COMMAND ${EXE_NAME}
+)
