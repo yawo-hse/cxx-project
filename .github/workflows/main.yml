@@ -1,0 +1,38 @@
+name: BuildAndTest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Set up CMake 3.18
+        uses: jwlawson/actions-setup-cmake@v1.8
+        with:
+          cmake-version: 3.18
+
+      - name: Build
+        shell: bash
+        run: python3 build.py --config $BUILD_TYPE
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: ctest -V -C $BUILD_TYPE
