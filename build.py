@@ -7,6 +7,9 @@ def parse_argv():
   args['py'] = 'python3'
   args['generator'] = ''
   args['config'] = 'Release'
+  
+  if sys.platform == 'win32':
+    args['py'] = 'python'
 
   argv = sys.argv
 
