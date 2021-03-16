@@ -1,4 +1,4 @@
-/*  test/unittests/test.cpp
+/*  cxx-project/core/main.cpp
  *
  *  Copyright (c) 2021 Mitya Selivanov
  *
@@ -10,12 +10,14 @@
  *  the MIT License for more details.
  */
 
-#include "../../cxx-project/core/core.h"
+#include "core.h"
 #include <gtest/gtest.h>
 
-namespace yetanotherproject {
-  TEST(cxx_project, some_test) {
-    
-    EXPECT_EQ(get_value(), 42);
-  }
+auto yetanotherproject::get_value() noexcept -> int {
+  return 42;
+}
+
+auto main() -> int {
+  testing::InitGoogleTest();
+  return RUN_ALL_TESTS();
 }

@@ -83,8 +83,8 @@ out = open(os.path.join('..', 'CMakeLists.txt'), 'w')
 
 out.write('cmake_minimum_required(VERSION 3.18)\n\n')
 
-out.write('set(PROJECT_NAME template-project)\n')
-out.write('set(EXE_NAME template-project)\n\n')
+out.write('set(PROJECT_NAME cxx-project)\n')
+out.write('set(EXE_NAME cxx-project)\n\n')
 
 out.write('project(${PROJECT_NAME} CXX)\n\n')
 
@@ -99,9 +99,6 @@ out.write('  TARGET ${EXE_NAME} PROPERTY CXX_STANDARD 20\n')
 out.write(')\n\n')
 
 out.write('if(MSVC)\n')
-out.write('  set_property(\n')
-out.write('    TARGET ${EXE_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded"\n')
-out.write('  )\n\n')
 out.write('  set_target_properties(\n')
 out.write('    ${EXE_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE"\n')
 out.write('  )\n')

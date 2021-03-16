@@ -1,2 +1,2 @@
-add_subdirectory(template-project)
+add_subdirectory(cxx-project)
 add_subdirectory(test)

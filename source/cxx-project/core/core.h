@@ -1,4 +1,4 @@
-/*  test/unittests/test.cpp
+/*  cxx-project/core/core.h
  *
  *  Copyright (c) 2021 Mitya Selivanov
  *
@@ -10,12 +10,11 @@
  *  the MIT License for more details.
  */
 
-#include "../../cxx-project/core/core.h"
-#include <gtest/gtest.h>
+#ifndef cxx_project_core_core_h
+#define cxx_project_core_core_h
 
 namespace yetanotherproject {
-  TEST(cxx_project, some_test) {
-    
-    EXPECT_EQ(get_value(), 42);
-  }
+  [[nodiscard]] auto get_value() noexcept -> int;
 }
+
+#endif

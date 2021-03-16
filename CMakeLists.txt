@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
-set(PROJECT_NAME template-project)
-set(EXE_NAME template-project)
+set(PROJECT_NAME cxx-project)
+set(EXE_NAME cxx-project)
 
 project(${PROJECT_NAME} CXX)
 
@@ -16,10 +16,6 @@ set_property(
 )
 
 if(MSVC)
-  set_property(
-    TARGET ${EXE_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded"
-  )
-
   set_target_properties(
     ${EXE_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE"
   )
