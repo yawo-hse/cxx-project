@@ -13,8 +13,6 @@ add_executable(${EXE_NAME})
 
 add_library(coverage_config INTERFACE)
 
-target_link_libraries(${EXE_NAME} PUBLIC coverage_config)
-
 if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   target_compile_options(coverage_config INTERFACE -O0 -g --coverage)
 
@@ -49,7 +47,7 @@ add_subdirectory(source)
 
 target_link_libraries(
   ${EXE_NAME}
-    Threads::Threads gtest benchmark
+    Threads::Threads gtest benchmark coverage_config
 )
 
 target_link_directories(
