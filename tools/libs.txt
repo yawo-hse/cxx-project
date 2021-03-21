@@ -1,1 +1,1 @@
-Threads::Threads gtest benchmark coverage_config
+Threads::Threads gtest benchmark
