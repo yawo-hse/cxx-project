@@ -34,7 +34,7 @@ jobs:
       
       - name: Build
         run: |
-          cmake -D CODE_COVERAGE=TRUE -B build -S .
+          cmake -D CODE_COVERAGE=ON -B build -S .
           cmake --build build --config $BUILD_TYPE
 
       - name: Test
@@ -46,3 +46,4 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           working-directory: ${{github.workspace}}/build
+          fail_ci_if_error: true
