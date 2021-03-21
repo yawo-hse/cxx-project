@@ -92,6 +92,19 @@ out.write('find_package(Threads REQUIRED)\n\n')
 
 out.write('add_executable(${EXE_NAME})\n\n')
 
+#yawo_added
+out.write('add_library(coverage_config INTERFACE)\n\n')
+out.write('option(CODE_COVERAGE "Enable coverage reporting" OFF)\n\n')
+out.write('target_link_libraries(${EXE_NAME} PUBLIC coverage_config)\n\n')
+out.write('if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")\n\n')
+out.write('  target_compile_options(coverage_config INTERFACE -O0 -g --coverage)\n\n')
+out.write('  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)\n\n')
+out.write('    target_link_options(coverage_config INTERFACE --coverage)\n\n')
+out.write('  else()\n\n')
+out.write('    target_link_libraries(coverage_config INTERFACE --coverage)\n\n')
+out.write('  endif()\n\n')
+out.write('endif(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")\n\n')
+
 out.write('add_library(Sockets INTERFACE)\n\n')
 
 out.write('set_property(\n')
