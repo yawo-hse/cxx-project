@@ -1,0 +1,48 @@
+name: build-and-test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Set up CMake 3.18
+        uses: jwlawson/actions-setup-cmake@v1.8
+        with:
+          cmake-version: 3.18
+
+      - name: BuildDeps
+        working-directory: ${{github.workspace}}/tools
+        run: python3 build-deps.py
+      
+      - name: Build
+        run: |
+          cmake -D CODE_COVERAGE=ON -B build -S .
+          cmake --build build --config $BUILD_TYPE
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: ctest -V -C $BUILD_TYPE
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          working-directory: ${{github.workspace}}/build
+          fail_ci_if_error: true
