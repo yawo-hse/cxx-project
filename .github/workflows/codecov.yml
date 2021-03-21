@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
 
 jobs:
   build:
@@ -28,9 +28,14 @@ jobs:
         with:
           cmake-version: 3.18
 
+      - name: BuildDeps
+        working-directory: ${{github.workspace}}/tools
+        run: python3 build-deps.py
+      
       - name: Build
-        shell: bash
-        run: python3 build.py --config $BUILD_TYPE
+        run: |
+          cmake -D CODE_COVERAGE=TRUE -B build -S .
+          cmake --build build --config $BUILD_TYPE
 
       - name: Test
         working-directory: ${{github.workspace}}/build
