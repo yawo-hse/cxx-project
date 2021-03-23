@@ -24,5 +24,5 @@ Use `tools/build-deps.py` to build the dependencies.
 
 Add `source` to the project and build manually. Required headers will be in `include` folder, libraries will be in `lib` folder.
 
-[codecov-badge]:   https://codecov.io/gh/yawo-hse/cxx-project/branch/feature-codecov/graph/badge.svg
-[codecov-link]:    https://codecov.io/gh/yawo-hse/cxx-project
+[codecov-badge]:   https://codecov.io/gh/automainint/cxx-project/branch/feature-codecov/graph/badge.svg
+[codecov-link]:    https://codecov.io/gh/automainint/cxx-project
